@@ -58,12 +58,12 @@ public class HongbaoAccessibilityService extends AccessibilityService {
                 Hongbao hb = findAvaliableHongbao(hongbao);
                 if (hb != null && !checkHongbao(hb) && hongbao.isVisibleToUser()) {
                     Rect rect = new Rect();
-                    try{
+                    try {
                         hongbao.getParent().getParent().getBoundsInScreen(rect);
                         Log.e("Test", "点击收到红包 " + rect.toShortString());
                         hongbao.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
                         caches.add(hb);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
@@ -109,7 +109,10 @@ public class HongbaoAccessibilityService extends AccessibilityService {
     private boolean slowly(List<AccessibilityNodeInfo> slowlys) {
         if (slowlys != null && !slowlys.isEmpty()) {
             Log.e("Test", "手慢了");
-            performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+            List<AccessibilityNodeInfo> backs = root.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/bfu");
+            if (backs != null && !backs.isEmpty()) {
+                backs.get(0).performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            }
             return true;
         }
         return false;
@@ -121,7 +124,10 @@ public class HongbaoAccessibilityService extends AccessibilityService {
     private boolean result(List<AccessibilityNodeInfo> results) {
         if (results != null && !results.isEmpty()) {
             Log.e("Test", "红包详情");
-            performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+            List<AccessibilityNodeInfo> backs = root.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/gv");
+            if (backs != null && !backs.isEmpty()) {
+                backs.get(0).performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            }
             return true;
         }
         return false;
